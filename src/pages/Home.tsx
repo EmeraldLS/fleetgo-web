@@ -14,10 +14,42 @@ import { FaCircleDot } from "react-icons/fa6";
 import { IoLocationOutline } from "react-icons/io5";
 import { MdMyLocation } from "react-icons/md";
 import { BookTripDrawer } from "../components/BookTripDrawer";
+import axios from "axios";
 
 const ApiKey = process.env.REACT_APP_HERE_API_KEY;
+const ipInfoApiKey = process.env.REACT_APP_IPINFO_API_KEY;
+
+const getIpLoc = async () => {
+  try {
+    let response = await axios.get("https://api.ipify.org?format=json");
+
+    response = await axios.get(
+      `https://ipinfo.io/${response?.data.ip}?token=${ipInfoApiKey}`
+    );
+    const location = response?.data.loc.split(",");
+    const latitude = location[0];
+    const longitude = location[1];
+
+    return {
+      lat: latitude,
+      lng: longitude,
+    };
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 const Home = () => {
+  const [ipLoc, setIpLoc] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
+  useEffect(() => {
+    getIpLoc().then((data) => {
+      setIpLoc(data!);
+    });
+  }, []);
+
   const [addressLocation, setAddressLocation] = useState({
     pickup: "",
     dropoff: "",
@@ -32,8 +64,8 @@ const Home = () => {
 
   const [stage, setStage] = useState(0);
   const [pickupCoord, setPickupCoord] = useState({
-    lat: "9.1150",
-    lng: "7.5109",
+    lat: ipLoc?.lat.toString() || "9.1150",
+    lng: ipLoc?.lng.toString() || "7.5109",
   });
 
   const [locString, setLocString] = useState("");
@@ -86,7 +118,7 @@ const Home = () => {
   const platform = useMemo(
     () =>
       new H.service.Platform({
-        apikey: ApiKey,
+        apikey: ApiKey!,
       }),
     []
   );
@@ -120,7 +152,7 @@ const Home = () => {
     const watchId = navigator.geolocation.watchPosition(
       (position) => {
         localStorage.setItem("user-location", JSON.stringify(position.coords));
-
+        console.log(position);
         setPickupCoord({
           lat: position.coords.latitude.toString(),
           lng: position.coords.longitude.toString(),
@@ -483,7 +515,7 @@ const Home = () => {
                       ref={dropoffinputRef}
                     />
                     {addressLocationFocus.dropoff &&
-                      dropoffLocations.length > 0 && (
+                      dropoffLocations?.length > 0 && (
                         <div
                           className=" bg-white drop-shadow-xl z-10  overflow-y-auto max-h-[250px] w-full absolute mt-1 rounded-md transition-all duration-300"
                           ref={dropoffdropdownRef}

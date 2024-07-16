@@ -89,7 +89,7 @@ export function BookTripDrawer({
   };
 
   const values = {
-    trip_type: selectedTripType,
+    type: selectedTripType,
     pickup_location_coord: {
       lat: parseFloat(pickupCoord.lat),
       lng: parseFloat(pickupCoord.lng),
@@ -101,6 +101,11 @@ export function BookTripDrawer({
   };
 
   const [open, setOpen] = useState(false);
+  const [, setRespData] = useState<{
+    date_time: string;
+    id: string;
+    // Other fields may be included
+  } | null>(null);
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["book-trip", pickupCoord, dropoffCoord],
@@ -110,6 +115,7 @@ export function BookTripDrawer({
     },
     onSuccess: (data) => {
       console.log(data);
+      setRespData(data.DATA);
       toast({
         title: "Scheduled: Catch up",
         description: "Friday, February 10, 2023 at 5:57 PM",

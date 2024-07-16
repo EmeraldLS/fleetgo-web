@@ -42,6 +42,7 @@ export default function Login() {
         default:
           break;
       }
+      window.location.reload();
     },
     onError: (err) => {
       // @ts-expect-error - It should've the response method
@@ -80,7 +81,7 @@ export default function Login() {
               <Input
                 id="email"
                 type="email"
-                placeholder="lawrenceishim@gmail.com"
+                placeholder=""
                 required
                 value={values.email}
                 onChange={(e) =>

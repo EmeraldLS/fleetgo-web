@@ -1,3 +1,4 @@
+import axios from "axios";
 import api from "./api";
 
 export const RegisterUser = async (user: UserRegistaration) => {
@@ -14,7 +15,7 @@ export const LoginUser = async (values: {
   email: string;
   password: string;
 }) => {
-  const response = await api.post("/login", values);
+  const response = await axios.post("http://localhost:2323/api/login", values);
 
   return response.data as LoginReturnType;
 };
