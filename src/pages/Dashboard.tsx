@@ -14,6 +14,7 @@ import { useAuthSore } from "../components/hooks/useAuth";
 import Loader from "../components/Loader";
 import { Navbar } from "../components/Navbar";
 import { useUserContext } from "../components/context/userContext";
+import { SearchingDriver } from "../components/SearchingDriver";
 
 interface EventResponse {
   type: string;
@@ -135,6 +136,8 @@ export default function Dashboard() {
     return () => clearTimeout(timer);
   }, []);
 
+  const { setTripStatus } = useUserContext();
+
   useEffect(() => {
     // if (!isReady) return;
 
@@ -147,8 +150,19 @@ export default function Dashboard() {
           break;
         case "notif":
           if (event.data != null) {
-            setNewNotif(event.data);
-            setNewNotifCount((prev) => prev + 1);
+            switch (event.data.type) {
+              case "TripRequest":
+                setNewNotif(event.data);
+                setNewNotifCount((prev) => prev + 1);
+                break;
+              case "TripAcceptance":
+                console.log("Trip has been accepted successfully");
+                setTripStatus({ status: "booked" });
+                break;
+
+              default:
+                break;
+            }
           }
           break;
         default:
@@ -168,7 +182,7 @@ export default function Dashboard() {
     return () => {
       eventSource.close();
     };
-  }, [isReady, SSE_URL]);
+  }, [isReady, SSE_URL, setTripStatus]);
 
   useEffect(() => {
     if (newNotif != null) {
@@ -194,6 +208,7 @@ export default function Dashboard() {
       <React.Suspense fallback={<Loader />}>
         <Navbar />
         <Toaster />
+        <SearchingDriver />
         <Outlet />
       </React.Suspense>
     </ProtectedRoute>

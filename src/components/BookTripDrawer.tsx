@@ -1,5 +1,4 @@
 import { Button } from "./ui/button";
-import { useToast } from "./ui/use-toast";
 
 import {
   Drawer,
@@ -21,6 +20,7 @@ import { useState } from "react";
 import { SkeletonLoader } from "./SkeletonLoader";
 import { useMutation } from "@tanstack/react-query";
 import { postRequest } from "../api/api_call";
+import { useUserContext } from "./context/userContext";
 
 interface drawerProps {
   disbabled: boolean;
@@ -45,7 +45,6 @@ export function BookTripDrawer({
   const [loading, setLoading] = useState(true);
 
   const [selectedTripType, setSelectedTripType] = useState("car");
-  const { toast } = useToast();
 
   const onOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
@@ -101,11 +100,9 @@ export function BookTripDrawer({
   };
 
   const [open, setOpen] = useState(false);
-  const [, setRespData] = useState<{
-    date_time: string;
-    id: string;
-    // Other fields may be included
-  } | null>(null);
+  const { setTripRespData } = useUserContext();
+
+  const { setTripStatus } = useUserContext();
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["book-trip", pickupCoord, dropoffCoord],
@@ -114,12 +111,9 @@ export function BookTripDrawer({
       console.error(err);
     },
     onSuccess: (data) => {
-      console.log(data);
-      setRespData(data.DATA);
-      toast({
-        title: "Scheduled: Catch up",
-        description: "Friday, February 10, 2023 at 5:57 PM",
-      });
+      setTripRespData(data.DATA);
+      setTripStatus({ status: data.DATA.status });
+      setOpen(false);
     },
   });
 
