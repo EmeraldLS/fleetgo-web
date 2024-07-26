@@ -1,6 +1,6 @@
 const Loader = () => {
   return (
-    <div className="fixed top-0 left-0 bg-white flex items-center justify-center h-screen w-full">
+    <div className="fixed top-20 left-0 bg-white flex items-center justify-center h-screen w-full">
       <div className="lds-ring">
         <div></div>
         <div></div>

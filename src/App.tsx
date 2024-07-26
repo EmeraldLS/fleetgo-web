@@ -7,8 +7,10 @@ import Login from "./pages/Login";
 import React from "react";
 import { UserProvider } from "./components/context/userContext";
 
+import TripDetail from "./pages/TripDetail";
+
 const Home = React.lazy(() => import("./pages/Home"));
-const TripDetail = React.lazy(() => import("./pages/TripDetail"));
+
 const Trips = React.lazy(() => import("./pages/Trips"));
 const queryClient = new QueryClient();
 

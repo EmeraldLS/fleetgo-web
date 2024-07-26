@@ -382,12 +382,12 @@ const Home = () => {
           <CardHeader>
             <CardTitle>Book a trip</CardTitle>
             <CardDescription>
-              <span
+              {/* <span
                 onClick={handleChangeStage}
                 className="text-primary bg-transparent underline cursor-pointer"
               >
                 {stage === 0 ? "Use Coordinates" : "Use Address"}
-              </span>
+              </span> */}
             </CardDescription>
           </CardHeader>
           <CardContent>

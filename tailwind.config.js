@@ -30,6 +30,11 @@ module.exports = {
         background: "#F2F2F2",
         text: "#333333",
         mutualText: "#666666",
+        searching: "#ADD8E6",
+        booked: "#90EE90",
+        in_progress: "#FFA500",
+        completed: "#D3D3D3",
+        cancelled: "#FF6347",
       },
       keyframes: {
         "accordion-down": {

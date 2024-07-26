@@ -54,6 +54,9 @@ export const SearchingDriver = () => {
       ) : (
         <Link
           to={`/app/${userType}/trip/${
+            // Used this so that it doesnt return undefined for now.
+            //TODO: Will change later
+
             tripResp?.id || "01J2XSEX12PR09XBH8XHFSQQ7H"
           }`}
           className="fixed top-4 right-4 z-10 bg-white shadow-md rounded-md p-4 border flex items-center border-gray-200"

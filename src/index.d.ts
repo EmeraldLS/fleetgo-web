@@ -19,3 +19,19 @@ interface User {
   refresh_token: string;
   user_type: number;
 }
+
+interface Trip {
+  type: string;
+  driver_id: number;
+  id: string;
+  status: string;
+  date_time: string;
+  pickup_location_coord: {
+    lat: number;
+    lng: number;
+  };
+  dropoff_location_coord: {
+    lat: number;
+    lng: number;
+  };
+}

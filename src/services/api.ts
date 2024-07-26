@@ -37,6 +37,7 @@ const refreshToken = async () => {
     };
 
     localStorage.setItem("user", JSON.stringify(newUser));
+    window.location.reload();
     return response.data.DATA.token;
   } catch (err) {
     console.error("Failed to refresh token", err);
