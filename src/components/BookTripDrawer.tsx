@@ -104,11 +104,11 @@ export function BookTripDrawer({
 
   const { setTripStatus } = useUserContext();
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, isError } = useMutation({
     mutationKey: ["book-trip", pickupCoord, dropoffCoord],
     mutationFn: (data: object) => postRequest("/trip", data),
     onError: (err) => {
-      console.error(err);
+      console.error(err.message);
     },
     onSuccess: (data) => {
       setTripRespData(data.DATA);
@@ -146,6 +146,11 @@ export function BookTripDrawer({
           </DrawerHeader>
           {
             <div className="p-4 pb-3 z-10 max-h-[25vh] space-y-3 overflow-y-auto">
+              {isError && (
+                <div className="bg-red-400 text-white px-2 mx-5 sm:mx-0 py-5 text-sm rounded-md text-center">
+                  An error occured creating trip
+                </div>
+              )}
               {loading ? (
                 <SkeletonLoader />
               ) : (

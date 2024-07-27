@@ -37,7 +37,6 @@ const refreshToken = async () => {
     };
 
     localStorage.setItem("user", JSON.stringify(newUser));
-    window.location.reload();
     return response.data.DATA.token;
   } catch (err) {
     console.error("Failed to refresh token", err);
@@ -49,6 +48,7 @@ api.interceptors.request.use(
   async (config) => {
     if (isTokenExpired()) {
       const newToken = await refreshToken();
+      window.location.reload();
       if (config.headers) {
         config.headers.Authorization = `Bearer ${newToken}`;
       }
